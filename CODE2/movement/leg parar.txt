@@ -1,0 +1,40 @@
+
+
+int limit_f_1=312;
+int limit_b_1 =180;
+
+int limit_f_6=312;
+int limit_b_6=450;
+
+
+int limit_f_5=220;
+int limit_b_5 =400;
+
+int limit_f_2=402;
+int limit_b_2=220;
+
+
+
+
+
+
+
+
+
+leg6up();
+leg1up();
+
+delay(500);
+leg6fwd();
+leg1fwd();
+
+delay(500);
+leg6dwn();
+leg1dwn();
+
+delay(500);
+leg6bck();
+leg1bck();
+
+delay(500);
+

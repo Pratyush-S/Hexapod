@@ -1,0 +1,546 @@
+  #include <RCSwitch.h>
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+
+
+RCSwitch mySwitch = RCSwitch();
+
+int tip_limit=512;//280
+int lower_limit=312;
+int t=40;
+int step1=50;
+int pos = 0;
+
+
+int limit_f_16=312;
+int limit_b_16=512;
+
+void reset();
+
+
+void reset1();
+void walk();
+void forward();
+void back();
+void left();
+void right();
+void up();
+void down();
+void rotate_right();
+void rotate_left();
+
+
+void leg2up();
+void leg2fwd();
+void leg2dwn();
+void leg2bck();
+
+void leg1up();
+void leg1fwd();
+void leg1dwn();
+void leg1bck();
+
+
+void leg3up();
+void leg3fwd();
+void leg3dwn();
+void leg3bck();
+
+void leg4up();
+void leg4fwd();
+void leg4dwn();
+void leg4bck();
+
+void leg5up();
+void leg5fwd();
+void leg5dwn();
+void leg5bck();
+
+
+void leg6up();
+void leg6fwd();
+void leg6dwn();
+void leg6bck();
+
+
+Adafruit_PWMServoDriver pwm1 = Adafruit_PWMServoDriver(&Wire, 0x40);
+Adafruit_PWMServoDriver pwm2 = Adafruit_PWMServoDriver(&Wire, 0x41);
+
+
+void setup() {
+  Serial.begin(9600);
+
+ mySwitch.enableReceive(0); //pin2
+  
+  pwm1.begin();  
+  pwm1.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
+  pwm2.begin(); 
+  pwm2.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
+
+pinMode(7,OUTPUT);
+
+  delay(10);
+}
+/////////////////////////////////////////////////////////////////
+
+void loop(){  
+
+
+while(1)
+{
+//reset();
+Serial.println("again");
+//delay(2000);
+
+while(1){
+
+leg6up();
+leg1up();
+
+delay(500);
+leg6fwd();
+leg1up();
+
+delay(500);
+leg6dwn();
+leg1up();
+
+delay(500);
+leg6bck();
+leg1up();
+
+delay(500);
+
+
+}
+//forward();}up dwn fwd bck 
+}
+ 
+    if (mySwitch.available()) {
+        int buffer1 = mySwitch.getReceivedValue();
+        if (buffer1 >= 0) { 
+          digitalWrite(7,LOW);
+            if (buffer1==0){
+              Serial.println("reset");
+            walk();
+            digitalWrite(7,HIGH);
+            }
+            else if (buffer1==1){                
+              Serial.println("up_1");
+              
+              }
+            else if (buffer1==2){
+              Serial.println("down_1");
+              
+              }
+            else if (buffer1==3){
+              Serial.println("right_1");
+              rotate_right();
+              }
+            else if (buffer1==4){
+              Serial.println("left_1");
+              rotate_left();
+              }
+            else if (buffer1==5){
+              Serial.println("dead zone");
+              
+              }
+            else if (buffer1==6){
+              Serial.println("up_2");
+              forward();
+              forward();forward();forward();
+              
+              }
+            else if (buffer1==7){
+              Serial.println("down_2");
+              back();
+              back();back();back();
+              delay(400);
+              }
+            else if (buffer1==8){
+              Serial.println("right_2");
+              
+              }
+            else if (buffer1==9){
+              Serial.println("left_2");
+              
+              }
+if(buffer1<10){
+
+digitalWrite(7,HIGH);
+delay(100);
+digitalWrite(7,LOW);
+delay(100);
+}
+        
+        }
+     if (buffer1==0)digitalWrite(7,HIGH);
+     else digitalWrite(7,LOW);
+        mySwitch.resetAvailable();
+      
+    }
+ }
+
+  
+//////////////////////////////////////////////////             2
+void leg2up(){
+  pwm2.setPWM(9, 0,112);
+delay(t);
+}
+void leg2fwd(){
+  pwm2.setPWM(8, 0,450);
+delay(t);
+}
+void leg2dwn(){
+  pwm2.setPWM(9, 0,lower_limit);
+delay(t);
+}
+void leg2bck(){
+pwm2.setPWM(8, 0,280);
+delay(t);
+}
+
+/////////////////////////////////////////////////////////////////            1
+void leg1up(){
+  pwm2.setPWM(1, 0,112);
+delay(t);
+}
+void leg1fwd(){
+  pwm2.setPWM(5, 0,limit_f_16);
+delay(t);
+}
+void leg1dwn(){
+  pwm2.setPWM(1, 0,lower_limit);
+delay(t);
+}
+void leg1bck(){
+pwm2.setPWM(5,0,limit_b_16);
+delay(t);
+}
+
+
+/////////////////////////////////////////////////////////////////            3
+void leg3up(){
+  pwm2.setPWM(13, 0,112);
+delay(t);
+}
+void leg3fwd(){
+  pwm2.setPWM(12, 0,380);
+delay(t);
+}
+void leg3dwn(){
+  pwm2.setPWM(13, 0,lower_limit);
+delay(t);
+}
+void leg3bck(){
+pwm2.setPWM(12, 0,280);
+delay(t);
+}
+
+
+
+
+//////////////////////////////////////////////////             4:  257
+void leg4up(){
+  pwm1.setPWM(5, 0,112);
+delay(t);
+}
+void leg4fwd(){
+  pwm1.setPWM(2, 0,180);
+delay(t);
+}
+void leg4dwn(){
+  pwm1.setPWM(5, 0,lower_limit);
+delay(t);
+}
+void leg4bck(){
+pwm1.setPWM(2, 0,280);
+delay(t);
+}
+
+/////////////////////////////////////////////////////////////////            5  :8910
+void leg5up(){
+  pwm1.setPWM(9, 0,112);
+delay(t);
+}
+void leg5fwd(){
+  pwm1.setPWM(8, 0,280);
+delay(t);
+}
+void leg5dwn(){
+  pwm1.setPWM(9, 0,lower_limit);
+delay(t);
+}
+void leg5bck(){
+pwm1.setPWM(8, 0,380);
+delay(t);
+}
+
+
+/////////////////////////////////////////////////////////////////            6  121314
+void leg6up(){
+  pwm1.setPWM(13, 0,112);
+delay(t);
+}
+void leg6fwd(){
+  pwm1.setPWM(12, 0,limit_f_16);
+delay(t);
+}
+void leg6dwn(){
+  pwm1.setPWM(13, 0,lower_limit);
+delay(t);
+}
+void leg6bck(){
+pwm1.setPWM(12, 0,limit_b_16);
+delay(t);
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////     RESET
+void reset(){
+  int x=312,i;
+ for(i=0;i<16;i++){
+pwm1.setPWM(i, 0, x);
+pwm2.setPWM(i, 0, x);
+}   
+  }
+  
+////////////////////////////////////////////////////////////////////////////     RESET
+
+void reset1(){
+  int x=512,i;
+ for(i=0;i<16;i++){
+pwm1.setPWM(i, 0, x);
+pwm2.setPWM(i, 0, x);
+}   
+  }
+  //////////////////////////////////////////////////////////////////////////////////////   walk mode
+void walk(){
+reset();
+delay(1000);
+
+pwm2.setPWM(10, 0, tip_limit);
+pwm2.setPWM(15, 0, tip_limit);
+pwm2.setPWM(2, 0, tip_limit);  //1
+
+pwm1.setPWM(7, 0, tip_limit);
+pwm1.setPWM(14, 0,tip_limit);
+pwm1.setPWM(10, 0, tip_limit);
+delay(500);
+
+tip_limit=400;
+pwm2.setPWM(10, 0, tip_limit);
+pwm2.setPWM(15, 0, tip_limit);
+pwm2.setPWM(2, 0, tip_limit);  //1
+
+pwm1.setPWM(7, 0, tip_limit);
+pwm1.setPWM(14, 0,tip_limit);
+pwm1.setPWM(10, 0, tip_limit);
+delay(500);
+
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////    forward step
+
+void forward(){
+  
+leg2up();
+leg6up();
+leg4up();
+
+leg2fwd();
+leg4fwd();
+leg6fwd();
+
+
+leg2dwn();
+leg4dwn();
+leg6dwn();
+
+
+leg1bck();
+leg5bck();
+leg3bck();
+
+
+leg1up();
+leg5up();
+leg3up();
+
+leg1fwd();
+leg5fwd();
+leg3fwd();
+
+
+
+
+leg1dwn();
+leg5dwn();
+leg3dwn();
+
+leg2bck();
+leg4bck();
+leg6bck();
+
+}
+    //////////////////////////////////////////////////////////////////////////////////////    back step
+
+void back(){
+  
+leg2up();
+leg6up();
+leg4up();
+
+leg2bck();
+leg4bck();
+leg6bck();
+
+
+leg2dwn();
+leg4dwn();
+leg6dwn();
+
+
+leg1fwd();
+leg5fwd();
+leg3fwd();
+
+
+leg1up();
+leg5up();
+leg3up();
+
+leg1bck();
+leg5bck();
+leg3bck();
+
+
+leg1dwn();
+leg5dwn();
+leg3dwn();
+
+leg2fwd();
+leg4fwd();
+leg6fwd();
+
+}
+ //////////////////////////////////////////////////////////////////////////////////////    roatete RIGHT
+
+void rotate_right(){
+  
+
+leg1up();
+leg5up();
+leg3up();
+
+
+
+leg1bck();
+leg5fwd();
+leg3bck();
+
+
+leg1dwn();
+leg5dwn();
+leg3dwn();
+
+  
+leg2up();
+leg6up();
+leg4up();
+
+
+leg2bck();
+leg6fwd();
+leg4fwd();
+
+leg1fwd();
+leg5bck();
+leg3fwd();
+
+
+leg2dwn();
+leg4dwn();
+leg6dwn();
+
+
+leg2fwd();
+leg6bck();
+leg4bck();
+}
+
+  //////////////////////////////////////////////////////////////////////////////////////    roatete LEFT
+
+void rotate_left(){
+  
+
+leg1up();
+leg5up();
+leg3up();
+
+
+leg1fwd();
+leg5bck();
+leg3fwd();
+
+
+leg1dwn();
+leg5dwn();
+leg3dwn();
+
+  
+leg2up();
+leg6up();
+leg4up();
+
+leg2fwd();
+leg6bck();
+leg4bck();
+
+leg1bck();
+leg5fwd();
+leg3bck();
+
+
+leg2dwn();
+leg4dwn();
+leg6dwn();
+
+leg2bck();
+leg6fwd();
+leg4fwd();
+
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////// up
+void up(){
+  if(lower_limit<510) lower_limit=lower_limit+step1;
+  delay(100);
+  leg1dwn();
+  leg2dwn();
+  leg3dwn();
+  leg4dwn();
+  leg5dwn();
+  leg6dwn();
+  }
+//////////////////////////////////////////////////////////////////////////////////////////////////// down 
+void down(){
+
+ if(lower_limit>120) lower_limit=lower_limit-step1;
+  delay(100);
+  leg1dwn();
+  leg2dwn();
+  leg3dwn();
+  leg4dwn();
+  leg5dwn();
+  leg6dwn();
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////// right
+void right(){
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////// down 
+void left(){
+}
+

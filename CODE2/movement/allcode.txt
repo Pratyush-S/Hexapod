@@ -1,0 +1,172 @@
+/*************************************************** 
+  This is an example for our Adafruit 16-channel PWM & Servo driver
+  Servo test - this will drive 8 servos, one after the other on the
+  first 8 pins of the PCA9685
+  Pick one up today in the adafruit shop!
+  ------> http://www.adafruit.com/products/815
+  
+  These drivers use I2C to communicate, 2 pins are required to  
+  interface.
+  Adafruit invests time and resources providing this open source code, 
+  please support Adafruit and open-source hardware by purchasing 
+  products from Adafruit!
+  Written by Limor Fried/Ladyada for Adafruit Industries.  
+  BSD license, all text above must be included in any redistribution
+ ****************************************************/
+
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+
+void stand();
+void reset();
+void elevation(int y,int x);
+
+void leg2up();
+void leg2fwd();
+void leg2dwn();
+void leg2bck();
+
+void leg1up();
+void leg1fwd();
+void leg1dwn();
+void leg1bck();
+
+
+void leg3up();
+void leg3fwd();
+void leg3dwn();
+void leg3bck();
+
+
+int t=500;
+Adafruit_PWMServoDriver pwm1 = Adafruit_PWMServoDriver(&Wire, 0x40);
+Adafruit_PWMServoDriver pwm2 = Adafruit_PWMServoDriver(&Wire, 0x41);
+
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("8 channel Servo test!");
+
+  pwm1.begin();
+  
+  pwm1.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
+  pwm2.begin();
+  
+ pwm2.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
+
+  delay(10);
+}
+
+
+void loop(){
+
+reset();
+
+pwm2.setPWM(10, 0, 150);
+pwm2.setPWM(15, 0, 150);
+pwm2.setPWM(2, 0, 150);
+
+
+delay(1000);
+while(1){
+
+  leg2up();
+leg2fwd();
+
+leg1bck();
+leg3bck();
+
+leg2dwn();
+
+
+leg1up();
+leg1fwd();
+leg3up();
+leg3fwd();
+
+
+leg2bck();
+
+
+leg1dwn();
+leg3dwn();
+
+}
+  
+  }
+
+
+  
+//////////////////////////////////////////////////             2
+void leg2up(){
+  pwm2.setPWM(9, 0,112);
+delay(t);
+}
+void leg2fwd(){
+  pwm2.setPWM(8, 0,450);
+delay(t);
+}
+void leg2dwn(){
+  pwm2.setPWM(9, 0,312);
+delay(t);
+}
+void leg2bck(){
+pwm2.setPWM(8, 0,280);
+delay(t);
+}
+
+/////////////////////////////////////////////////////////////////            1
+void leg1up(){
+  pwm2.setPWM(1, 0,112);
+delay(t);
+}
+void leg1fwd(){
+  pwm2.setPWM(5, 0,380);
+delay(t);
+}
+void leg1dwn(){
+  pwm2.setPWM(1, 0,312);
+delay(t);
+}
+void leg1bck(){
+pwm2.setPWM(5, 0,280);
+delay(t);
+}
+
+
+/////////////////////////////////////////////////////////////////            3
+void leg3up(){
+  pwm2.setPWM(13, 0,112);
+delay(t);
+}
+void leg3fwd(){
+  pwm2.setPWM(12, 0,380);
+delay(t);
+}
+void leg3dwn(){
+  pwm2.setPWM(13, 0,312);
+delay(t);
+}
+void leg3bck(){
+pwm2.setPWM(12, 0,280);
+delay(t);
+}
+
+
+
+
+
+
+
+
+
+void reset(){
+  int x=400,i;
+ for(i=0;i<16;i++){
+pwm1.setPWM(i, 0, x);
+pwm2.setPWM(i, 0, x);
+}   
+  }
+  
+
+

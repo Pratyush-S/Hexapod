@@ -1,0 +1,16 @@
+if (mySwitch.available()) {
+        int value = mySwitch.getReceivedValue();
+        if (value >= 0) {
+            if (mySwitch.getReceivedValue()==0){walk();}
+            else if (mySwitch.getReceivedValue()==1){up();}
+            else if (mySwitch.getReceivedValue()==2){down;}
+            else if (mySwitch.getReceivedValue()==3){right();}
+            else if (mySwitch.getReceivedValue()==4){left();}
+            else if (mySwitch.getReceivedValue()==5){ Serial.println("dead zone");}
+            else if (mySwitch.getReceivedValue()==6){forward();}
+            else if (mySwitch.getReceivedValue()==7){back();}
+            else if (mySwitch.getReceivedValue()==8){Serial.println("right_2");}
+            else if (mySwitch.getReceivedValue()==9){Serial.println("left_2");}
+        }
+        mySwitch.resetAvailable();
+    }
